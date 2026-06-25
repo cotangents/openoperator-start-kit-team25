@@ -1,0 +1,1448 @@
+{
+  "001_LeakyReLU": {
+    "torch_us": 27.769,
+    "measured_at": "2026-05-17T12:18:34.923341+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "002_matrix_scalar_multiplication": {
+    "torch_us": 8274.871,
+    "measured_at": "2026-05-17T12:18:43.037860+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16384,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "003_LogSoftmax": {
+    "torch_us": 35.947,
+    "measured_at": "2026-05-17T12:18:43.049698+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "004_batched_matrix_multiplication": {
+    "torch_us": 12624.839,
+    "measured_at": "2026-05-17T12:18:53.205671+00:00",
+    "iterations": 5,
+    "output_shape": [
+      128,
+      512,
+      2048
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "005_average_pooling_2d": {
+    "torch_us": 7291.036,
+    "measured_at": "2026-05-17T12:18:57.282282+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4,
+      32,
+      93,
+      93
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "006_conv_depthwise_2D_square_input_square_kernel": {
+    "torch_us": 336.141,
+    "measured_at": "2026-05-17T12:18:57.386343+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      3,
+      254,
+      254
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "007_conv_depthwise_separable_2D": {
+    "torch_us": 1398.28,
+    "measured_at": "2026-05-17T12:18:57.491273+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      254,
+      254
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "008_conv_pointwise_2D": {
+    "torch_us": 1201.935,
+    "measured_at": "2026-05-17T12:18:57.590593+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      256,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "009_conv_standard_1D": {
+    "torch_us": 71.834,
+    "measured_at": "2026-05-17T12:18:57.594448+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      510
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "010_conv_standard_2D__square_input__square_kernel": {
+    "torch_us": 1256.745,
+    "measured_at": "2026-05-17T12:18:57.694519+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      254,
+      254
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "011_conv_transposed_1D": {
+    "torch_us": 73.904,
+    "measured_at": "2026-05-17T12:18:57.700768+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      3,
+      130
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "012_conv_transposed_2D__asymmetric_input__square_kernel": {
+    "torch_us": 2197.521,
+    "measured_at": "2026-05-17T12:18:58.211046+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      130,
+      258
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "013_3D_tensor_matrix_multiplication": {
+    "torch_us": 2256.756,
+    "measured_at": "2026-05-17T12:18:59.347745+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      1024,
+      768
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "014_4D_tensor_matrix_multiplication": {
+    "torch_us": 34664.905,
+    "measured_at": "2026-05-17T12:25:19.020461+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      256,
+      512,
+      768
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "015_Matmul_for_lower_triangular_matrices": {
+    "torch_us": 6501.216,
+    "measured_at": "2026-05-17T12:19:17.525492+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4096,
+      4096
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "016_Matmul_for_symmetric_matrices": {
+    "torch_us": 6113.173,
+    "measured_at": "2026-05-17T12:19:18.779644+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4096,
+      4096
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "017_Matmul_for_upper_triangular_matrices": {
+    "torch_us": 6502.873,
+    "measured_at": "2026-05-17T12:19:19.933972+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4096,
+      4096
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "018_Matmul_with_diagonal_matrices_": {
+    "torch_us": 6334.519,
+    "measured_at": "2026-05-17T12:19:20.517201+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4096,
+      4096
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "019_Matmul_with_irregular_shapes_": {
+    "torch_us": 14213.932,
+    "measured_at": "2026-05-17T12:19:21.936108+00:00",
+    "iterations": 5,
+    "output_shape": [
+      8205,
+      5921
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "020_Matmul_with_large_K_dimension_": {
+    "torch_us": 1715.838,
+    "measured_at": "2026-05-17T12:19:24.093282+00:00",
+    "iterations": 5,
+    "output_shape": [
+      256,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "021_Matmul_with_small_K_dimension_": {
+    "torch_us": 3977.722,
+    "measured_at": "2026-05-17T12:19:24.165048+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16384,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "022_Matmul_with_transposed_both": {
+    "torch_us": 816.838,
+    "measured_at": "2026-05-17T12:19:24.545807+00:00",
+    "iterations": 5,
+    "output_shape": [
+      1024,
+      2048
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "023_Matrix_vector_multiplication_": {
+    "torch_us": 953.936,
+    "measured_at": "2026-05-17T12:19:25.622666+00:00",
+    "iterations": 5,
+    "output_shape": [
+      256,
+      1
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "024_Square_matrix_multiplication_": {
+    "torch_us": 828.783,
+    "measured_at": "2026-05-17T12:19:25.906167+00:00",
+    "iterations": 5,
+    "output_shape": [
+      2048,
+      2048
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "025_fused_matmul_fwd": {
+    "torch_us": 105.192,
+    "measured_at": "2026-05-17T12:19:25.944207+00:00",
+    "iterations": 5,
+    "output_shape": [
+      256,
+      1024
+    ],
+    "output_dtype": "torch.float16"
+  },
+  "026_ELU": {
+    "torch_us": 28.932,
+    "measured_at": "2026-05-17T12:19:25.956032+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "027_GELU": {
+    "torch_us": 24.193,
+    "measured_at": "2026-05-17T12:19:25.966229+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "028_HardSigmoid": {
+    "torch_us": 22.657,
+    "measured_at": "2026-05-17T12:19:25.976099+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "029_HardTanh": {
+    "torch_us": 28.703,
+    "measured_at": "2026-05-17T12:19:25.986473+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "030_MinGPTNewGelu": {
+    "torch_us": 1175.988,
+    "measured_at": "2026-05-17T12:19:26.113743+00:00",
+    "iterations": 5,
+    "output_shape": [
+      2000,
+      2000
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "031_Softplus": {
+    "torch_us": 30.698,
+    "measured_at": "2026-05-17T12:19:26.124548+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "032_Softsign": {
+    "torch_us": 62.151,
+    "measured_at": "2026-05-17T12:19:26.140580+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "033_Swish": {
+    "torch_us": 28.675,
+    "measured_at": "2026-05-17T12:19:26.150899+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "034_Argmax_over_a_dimension": {
+    "torch_us": 43.97,
+    "measured_at": "2026-05-17T12:19:26.183077+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      256
+    ],
+    "output_dtype": "torch.int64"
+  },
+  "035_L1Norm_": {
+    "torch_us": 745.1,
+    "measured_at": "2026-05-17T12:19:26.197905+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "036_L2Norm_": {
+    "torch_us": 738.872,
+    "measured_at": "2026-05-17T12:19:26.212714+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "037_Max_reduction_over_a_dimension": {
+    "torch_us": 42.202,
+    "measured_at": "2026-05-17T12:19:26.244274+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "038_Product_reduction_over_a_dimension": {
+    "torch_us": 37.097,
+    "measured_at": "2026-05-17T12:19:26.275720+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "039_BatchNorm": {
+    "torch_us": 5349.541,
+    "measured_at": "2026-05-17T12:19:28.368219+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      256,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "040_CosineSimilarityLoss": {
+    "torch_us": 300.173,
+    "measured_at": "2026-05-17T12:19:28.404091+00:00",
+    "iterations": 5,
+    "output_shape": [],
+    "output_dtype": "torch.float32"
+  },
+  "041_CrossEntropyLoss": {
+    "torch_us": 75.78,
+    "measured_at": "2026-05-17T12:19:28.410683+00:00",
+    "iterations": 5,
+    "output_shape": [],
+    "output_dtype": "torch.float32"
+  },
+  "042_FrobeniusNorm_": {
+    "torch_us": 3192.141,
+    "measured_at": "2026-05-17T12:19:30.488773+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      256,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "043_GroupNorm_": {
+    "torch_us": 3437.106,
+    "measured_at": "2026-05-17T12:19:32.570444+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      256,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "044_HingeLoss": {
+    "torch_us": 69.348,
+    "measured_at": "2026-05-17T12:19:32.572607+00:00",
+    "iterations": 5,
+    "output_shape": [],
+    "output_dtype": "torch.float32"
+  },
+  "045_HuberLoss": {
+    "torch_us": 52.38,
+    "measured_at": "2026-05-17T12:19:32.607196+00:00",
+    "iterations": 5,
+    "output_shape": [],
+    "output_dtype": "torch.float32"
+  },
+  "046_InstanceNorm": {
+    "torch_us": 5805.146,
+    "measured_at": "2026-05-17T12:19:34.691183+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      256,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "047_Max_Pooling_1D": {
+    "torch_us": 51.23,
+    "measured_at": "2026-05-17T12:19:34.697783+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      62
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "048_Max_Pooling_2D": {
+    "torch_us": 524.554,
+    "measured_at": "2026-05-17T12:19:34.951641+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      32,
+      64,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "049_Max_Pooling_3D": {
+    "torch_us": 17931.465,
+    "measured_at": "2026-05-17T12:19:39.180225+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      32,
+      30,
+      30,
+      30
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "050_cumprod": {
+    "torch_us": 49.296,
+    "measured_at": "2026-05-17T12:19:39.197803+00:00",
+    "iterations": 5,
+    "output_shape": [
+      128,
+      4000
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "051_cumsum": {
+    "torch_us": 47.62,
+    "measured_at": "2026-05-17T12:19:39.214239+00:00",
+    "iterations": 5,
+    "output_shape": [
+      128,
+      4000
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "052_cumsum_exclusive": {
+    "torch_us": 101.923,
+    "measured_at": "2026-05-17T12:19:39.233417+00:00",
+    "iterations": 5,
+    "output_shape": [
+      128,
+      4000
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "053_cumsum_reverse": {
+    "torch_us": 142.451,
+    "measured_at": "2026-05-17T12:19:39.250257+00:00",
+    "iterations": 5,
+    "output_shape": [
+      128,
+      4000
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "054_binned_gather": {
+    "torch_us": 478.75,
+    "measured_at": "2026-05-17T12:19:39.255785+00:00",
+    "iterations": 5,
+    "output_shape": [
+      2,
+      5,
+      4
+    ],
+    "output_dtype": "torch.float16"
+  },
+  "055_binned_scatter": {
+    "torch_us": 560.933,
+    "measured_at": "2026-05-17T12:19:39.260702+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4,
+      4
+    ],
+    "output_dtype": "torch.float16"
+  },
+  "056_gather": {
+    "torch_us": 269.403,
+    "measured_at": "2026-05-17T12:19:39.286523+00:00",
+    "iterations": 5,
+    "output_shape": [
+      8,
+      8
+    ],
+    "output_dtype": "torch.float16"
+  },
+  "057_rotary_pos_emb_fusion": {
+    "torch_us": 214.246,
+    "measured_at": "2026-05-17T12:19:39.318467+00:00",
+    "iterations": 5,
+    "output_shape": null,
+    "output_dtype": null
+  },
+  "058_Softmax": {
+    "torch_us": 32.065,
+    "measured_at": "2026-05-17T12:19:39.327947+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "059_hstu_mask_var_len_fwd": {
+    "torch_us": 1266.285,
+    "measured_at": "2026-05-17T12:19:39.349985+00:00",
+    "iterations": 5,
+    "output_shape": [
+      22,
+      4,
+      40
+    ],
+    "output_dtype": "torch.float16"
+  },
+  "060_cross_entropy": {
+    "torch_us": 681.193,
+    "measured_at": "2026-05-17T12:19:42.448928+00:00",
+    "iterations": 5,
+    "output_shape": [
+      1
+    ],
+    "output_dtype": "torch.float16"
+  },
+  "061_adaptiveaveragepool": {
+    "torch_us": 103.714,
+    "measured_at": "2026-05-17T12:19:42.452230+00:00",
+    "iterations": 5,
+    "output_shape": [
+      2,
+      4,
+      8,
+      8,
+      8
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "062_compute_agg": {
+    "torch_us": 34.519,
+    "measured_at": "2026-05-17T12:19:42.453861+00:00",
+    "iterations": 5,
+    "output_shape": [
+      1024
+    ],
+    "output_dtype": "torch.int64"
+  },
+  "063_calc_block_sums": {
+    "torch_us": 28.796,
+    "measured_at": "2026-05-17T12:19:42.454963+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "064_adaptive_average_pool_nhwc": {
+    "torch_us": 33.015,
+    "measured_at": "2026-05-17T12:19:42.460068+00:00",
+    "iterations": 5,
+    "output_shape": [
+      8,
+      16,
+      16,
+      16
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "065_lpmax_cleanup": {
+    "torch_us": 105.56,
+    "measured_at": "2026-05-17T12:19:42.463422+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "066_transform_vals": {
+    "torch_us": 21.655,
+    "measured_at": "2026-05-17T12:19:42.519982+00:00",
+    "iterations": 5,
+    "output_shape": [
+      1,
+      3,
+      224,
+      224
+    ],
+    "output_dtype": "torch.float16"
+  },
+  "067_renormRowsL1": {
+    "torch_us": 80.434,
+    "measured_at": "2026-05-17T12:19:42.523378+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      32
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "068_upsample_bilinear2d_out_frame": {
+    "torch_us": 7932.043,
+    "measured_at": "2026-05-17T12:19:42.572805+00:00",
+    "iterations": 5,
+    "output_shape": [
+      1,
+      1,
+      8,
+      8
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "069_lstm_cell_forward": {
+    "torch_us": 176.963,
+    "measured_at": "2026-05-17T12:19:42.576658+00:00",
+    "iterations": 5,
+    "output_shape": [
+      1024
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "070_Sqrt": {
+    "torch_us": 39.894,
+    "measured_at": "2026-05-17T12:19:42.589521+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "071_Cos": {
+    "torch_us": 24.373,
+    "measured_at": "2026-05-17T12:19:42.601272+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "072_ElementwiseAdd": {
+    "torch_us": 207.003,
+    "measured_at": "2026-05-17T12:19:42.859511+00:00",
+    "iterations": 5,
+    "output_shape": [
+      1024,
+      4096
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "073_Power": {
+    "torch_us": 38.743,
+    "measured_at": "2026-05-17T12:19:42.869077+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      16384
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "074_Std_reduction_over_dim": {
+    "torch_us": 104.863,
+    "measured_at": "2026-05-17T12:19:42.901061+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "075_TopK": {
+    "torch_us": 28.688,
+    "measured_at": "2026-05-17T12:19:42.903540+00:00",
+    "iterations": 5,
+    "output_shape": null,
+    "output_dtype": null
+  },
+  "076_Sort": {
+    "torch_us": 38.031,
+    "measured_at": "2026-05-17T12:19:42.905026+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      1024
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "077_LogSumExp_over_dim": {
+    "torch_us": 109.222,
+    "measured_at": "2026-05-17T12:19:42.913172+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "078_CumMin": {
+    "torch_us": 217.771,
+    "measured_at": "2026-05-17T12:19:42.932736+00:00",
+    "iterations": 5,
+    "output_shape": [
+      128,
+      4000
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "079_Global_sum": {
+    "torch_us": 30.699,
+    "measured_at": "2026-05-17T12:19:42.949220+00:00",
+    "iterations": 5,
+    "output_shape": [],
+    "output_dtype": "torch.float32"
+  },
+  "080_All_over_dim": {
+    "torch_us": 53.98,
+    "measured_at": "2026-05-17T12:19:42.979736+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      256
+    ],
+    "output_dtype": "torch.bool"
+  },
+  "081_Sum_2D_reduction": {
+    "torch_us": 47.337,
+    "measured_at": "2026-05-17T12:19:43.011199+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "082_Scaled_Dot_Product_Attention": {
+    "torch_us": 86.781,
+    "measured_at": "2026-05-17T12:19:43.024350+00:00",
+    "iterations": 5,
+    "output_shape": [
+      2,
+      8,
+      128,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "083_Causal_Self_Attention": {
+    "torch_us": 174.664,
+    "measured_at": "2026-05-17T12:19:43.042079+00:00",
+    "iterations": 5,
+    "output_shape": [
+      2,
+      8,
+      128,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "084_Cross_Attention": {
+    "torch_us": 428.263,
+    "measured_at": "2026-05-17T12:19:43.063587+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4,
+      64,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "085_Linear": {
+    "torch_us": 880.297,
+    "measured_at": "2026-05-17T12:19:43.197434+00:00",
+    "iterations": 5,
+    "output_shape": [
+      64,
+      128,
+      2048
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "086_Batch_outer_product": {
+    "torch_us": 227.664,
+    "measured_at": "2026-05-17T12:19:43.201872+00:00",
+    "iterations": 5,
+    "output_shape": [
+      64,
+      256,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "087_Hadamard_product": {
+    "torch_us": 212.43,
+    "measured_at": "2026-05-17T12:19:43.452932+00:00",
+    "iterations": 5,
+    "output_shape": [
+      2048,
+      2048
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "088_Matrix_trace": {
+    "torch_us": 78.977,
+    "measured_at": "2026-05-17T12:19:43.698829+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "089_Diagonal_extraction": {
+    "torch_us": 13.964,
+    "measured_at": "2026-05-17T12:19:43.941917+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "090_Einsum_4D_contract": {
+    "torch_us": 55.821,
+    "measured_at": "2026-05-17T12:19:43.959957+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4,
+      8,
+      128,
+      128
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "091_Matrix_inverse": {
+    "torch_us": 326.616,
+    "measured_at": "2026-05-17T12:19:43.968787+00:00",
+    "iterations": 5,
+    "output_shape": [
+      8,
+      64,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "092_SVD_decomposition": {
+    "torch_us": 176521.074,
+    "measured_at": "2026-05-17T12:19:44.942530+00:00",
+    "iterations": 5,
+    "output_shape": null,
+    "output_dtype": null
+  },
+  "093_Batch_triangular_solve": {
+    "torch_us": 79.223,
+    "measured_at": "2026-05-17T12:19:44.945738+00:00",
+    "iterations": 5,
+    "output_shape": [
+      8,
+      64,
+      1
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "094_LayerNorm": {
+    "torch_us": 93.257,
+    "measured_at": "2026-05-17T12:19:45.010044+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32,
+      128,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "095_Add_RMSNorm": {
+    "torch_us": 360.071,
+    "measured_at": "2026-05-17T12:19:45.134956+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32,
+      128,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "096_LocalResponseNorm": {
+    "torch_us": 30197.969,
+    "measured_at": "2026-05-17T12:19:45.408917+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      56,
+      56
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "097_PixelShuffle": {
+    "torch_us": 56.259,
+    "measured_at": "2026-05-17T12:19:45.441526+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4,
+      64,
+      64,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "098_Attention_with_temperature": {
+    "torch_us": 85.521,
+    "measured_at": "2026-05-17T12:19:45.447895+00:00",
+    "iterations": 5,
+    "output_shape": [
+      2,
+      8,
+      128,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "099_DropPath": {
+    "torch_us": 164.356,
+    "measured_at": "2026-05-17T12:19:45.510185+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32,
+      128,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "100_Adaptive_Max_Pool_2D": {
+    "torch_us": 3086.315,
+    "measured_at": "2026-05-17T12:19:47.582479+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      8,
+      8
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "101_Max_Pool_2D_with_indices": {
+    "torch_us": 523.07,
+    "measured_at": "2026-05-17T12:19:47.831728+00:00",
+    "iterations": 5,
+    "output_shape": null,
+    "output_dtype": null
+  },
+  "102_Adaptive_Average_Pool_3D": {
+    "torch_us": 578.715,
+    "measured_at": "2026-05-17T12:19:47.897143+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4,
+      16,
+      4,
+      8,
+      8
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "103_MSE_Loss": {
+    "torch_us": 42.231,
+    "measured_at": "2026-05-17T12:19:47.930360+00:00",
+    "iterations": 5,
+    "output_shape": [],
+    "output_dtype": "torch.float32"
+  },
+  "104_KL_Divergence_Loss": {
+    "torch_us": 155.014,
+    "measured_at": "2026-05-17T12:19:47.942375+00:00",
+    "iterations": 5,
+    "output_shape": [],
+    "output_dtype": "torch.float32"
+  },
+  "105_Embedding_lookup": {
+    "torch_us": 148.597,
+    "measured_at": "2026-05-17T12:19:48.024276+00:00",
+    "iterations": 5,
+    "output_shape": [
+      64,
+      128,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "106_Embedding_bag_mean": {
+    "torch_us": 76.887,
+    "measured_at": "2026-05-17T12:19:48.068490+00:00",
+    "iterations": 5,
+    "output_shape": [
+      64,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "107_Sinusoidal_positional_encoding": {
+    "torch_us": 92.407,
+    "measured_at": "2026-05-17T12:19:48.131813+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32,
+      128,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "108_ALiBi_attention_bias": {
+    "torch_us": 186.12,
+    "measured_at": "2026-05-17T12:19:48.142998+00:00",
+    "iterations": 5,
+    "output_shape": [
+      8,
+      128,
+      128
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "109_Scatter_add": {
+    "torch_us": 89.14,
+    "measured_at": "2026-05-17T12:19:48.180816+00:00",
+    "iterations": 5,
+    "output_shape": [
+      512,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "110_Gather_rows": {
+    "torch_us": 23.053,
+    "measured_at": "2026-05-17T12:19:48.185566+00:00",
+    "iterations": 5,
+    "output_shape": [
+      64,
+      32
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "111_Masked_select": {
+    "torch_us": 446.444,
+    "measured_at": "2026-05-17T12:19:48.221466+00:00",
+    "iterations": 5,
+    "output_shape": [
+      523513
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "112_Index_put": {
+    "torch_us": 99.097,
+    "measured_at": "2026-05-17T12:19:48.287931+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4096,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "113_Upsample_nearest": {
+    "torch_us": 147.867,
+    "measured_at": "2026-05-17T12:19:48.319991+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4,
+      64,
+      128,
+      128
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "114_Pad_constant": {
+    "torch_us": 740.874,
+    "measured_at": "2026-05-17T12:19:48.826573+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      132,
+      132
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "115_Unfold": {
+    "torch_us": 2581.786,
+    "measured_at": "2026-05-17T12:19:48.932274+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      27,
+      64516
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "116_Grid_sample": {
+    "torch_us": 357.796,
+    "measured_at": "2026-05-17T12:19:49.058669+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4,
+      64,
+      64,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "117_Masked_fill": {
+    "torch_us": 285.07,
+    "measured_at": "2026-05-17T12:19:49.308092+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32,
+      512,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "118_Where_conditional": {
+    "torch_us": 80.641,
+    "measured_at": "2026-05-17T12:19:49.402237+00:00",
+    "iterations": 5,
+    "output_shape": [
+      1024,
+      1024
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "119_One_hot_encoding": {
+    "torch_us": 96.831,
+    "measured_at": "2026-05-17T12:19:49.406295+00:00",
+    "iterations": 5,
+    "output_shape": [
+      1024,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "120_Masked_softmax": {
+    "torch_us": 522.086,
+    "measured_at": "2026-05-17T12:19:49.529688+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32,
+      8,
+      128,
+      128
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "121_Scaled_masked_softmax": {
+    "torch_us": 140.19,
+    "measured_at": "2026-05-17T12:19:49.547847+00:00",
+    "iterations": 5,
+    "output_shape": [
+      4,
+      8,
+      128,
+      128
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "122_Prefix_sum_2D": {
+    "torch_us": 118.307,
+    "measured_at": "2026-05-17T12:19:49.580540+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      256,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "123_Masked_cumsum": {
+    "torch_us": 92.526,
+    "measured_at": "2026-05-17T12:19:49.611886+00:00",
+    "iterations": 5,
+    "output_shape": [
+      128,
+      4000
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "124_Weight_standardization": {
+    "torch_us": 1136.309,
+    "measured_at": "2026-05-17T12:19:49.865821+00:00",
+    "iterations": 5,
+    "output_shape": [
+      8,
+      64,
+      128,
+      128
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "125_Conditional_LayerNorm": {
+    "torch_us": 263.254,
+    "measured_at": "2026-05-17T12:19:49.930849+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32,
+      128,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "126_QR_decomposition": {
+    "torch_us": 1602.525,
+    "measured_at": "2026-05-17T12:19:49.943906+00:00",
+    "iterations": 5,
+    "output_shape": null,
+    "output_dtype": null
+  },
+  "127_Cholesky_decomposition": {
+    "torch_us": 321.517,
+    "measured_at": "2026-05-17T12:19:49.948590+00:00",
+    "iterations": 5,
+    "output_shape": [
+      8,
+      64,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "128_Batch_norm_1D": {
+    "torch_us": 59.604,
+    "measured_at": "2026-05-17T12:19:49.954069+00:00",
+    "iterations": 5,
+    "output_shape": [
+      256,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "129_Attention_score_with_bias": {
+    "torch_us": 102.137,
+    "measured_at": "2026-05-17T12:19:49.971842+00:00",
+    "iterations": 5,
+    "output_shape": [
+      2,
+      8,
+      128,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "130_Attention_kv_cache": {
+    "torch_us": 102.346,
+    "measured_at": "2026-05-17T12:19:49.989990+00:00",
+    "iterations": 5,
+    "output_shape": [
+      1,
+      8,
+      1,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "131_Relative_position_encoding": {
+    "torch_us": 143.121,
+    "measured_at": "2026-05-17T12:19:49.991886+00:00",
+    "iterations": 5,
+    "output_shape": [
+      128,
+      128,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "132_Sparse_embedding": {
+    "torch_us": 149.935,
+    "measured_at": "2026-05-17T12:19:50.060350+00:00",
+    "iterations": 5,
+    "output_shape": [
+      256,
+      64,
+      256
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "133_Triplet_loss": {
+    "torch_us": 126.616,
+    "measured_at": "2026-05-17T12:19:50.065199+00:00",
+    "iterations": 5,
+    "output_shape": [],
+    "output_dtype": "torch.float32"
+  },
+  "134_Depthwise_conv_2D": {
+    "torch_us": 1094.682,
+    "measured_at": "2026-05-17T12:19:50.577505+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      64,
+      128,
+      128
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "135_Dilated_conv_2D": {
+    "torch_us": 2253.874,
+    "measured_at": "2026-05-17T12:19:51.095766+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      128,
+      128,
+      128
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "136_Grouped_conv_2D": {
+    "torch_us": 3334.251,
+    "measured_at": "2026-05-17T12:19:51.624776+00:00",
+    "iterations": 5,
+    "output_shape": [
+      16,
+      128,
+      128,
+      128
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "137_LSTM_forward": {
+    "torch_us": 28219.093,
+    "measured_at": "2026-05-17T12:19:51.844821+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32,
+      128,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "138_GRU_forward": {
+    "torch_us": 21378.517,
+    "measured_at": "2026-05-17T12:19:52.030317+00:00",
+    "iterations": 5,
+    "output_shape": [
+      32,
+      128,
+      512
+    ],
+    "output_dtype": "torch.float32"
+  },
+  "139_Sparse_attention_mask": {
+    "torch_us": 295.757,
+    "measured_at": "2026-05-17T12:19:52.045150+00:00",
+    "iterations": 5,
+    "output_shape": [
+      2,
+      4,
+      256,
+      64
+    ],
+    "output_dtype": "torch.float32"
+  }
+}

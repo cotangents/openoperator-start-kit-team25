@@ -1,0 +1,1493 @@
+{
+  "general_rules": [
+    {
+      "flags": 2,
+      "id": "FORBIDDEN_CNNL_HEADER",
+      "message": "禁止包含 CNNL 头文件（如 cnnl.h）；比赛要求不得直接调用 CNNL 高级算子。",
+      "pattern": "#\\s*include\\s*<\\s*cnnl(?:/[\\w.\\-]+)?\\.h\\s*>"
+    },
+    {
+      "flags": 2,
+      "id": "FORBIDDEN_ATEN_CNNL_HEADER",
+      "message": "禁止包含 aten/cnnl/* 头文件；不得通过 ATen/CNNL 封装间接调用现成算子。",
+      "pattern": "#\\s*include\\s*<\\s*aten/cnnl/[^>]+\\s*>"
+    },
+    {
+      "flags": 0,
+      "id": "FORBIDDEN_TORCH_MODULE_API",
+      "message": "禁止直接使用高层 torch 模块 API：torch::nn:: / torch::jit:: / torch::autograd:: / torch::optim::。",
+      "pattern": "\\btorch::(nn|jit|autograd|optim)::"
+    },
+    {
+      "flags": 0,
+      "id": "FORBIDDEN_TORCH_HIGH_LEVEL_OP",
+      "message": "禁止直接调用 torch:: / at:: 下的现成算子实现，例如 at::conv(...)、torch::conv(...)。",
+      "pattern": "\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?!(?:getCurrentMLUStream|getCurMLUStream|SymIntArrayRef|TensorOptions|scalar_tensor|MemoryFormat|IntArrayRef|manual_seed|ScalarType|empty_like|zeros_like|from_blob|full_like|ones_like|ArrayRef|linspace|logspace|randperm|Dimname|randint|Device|Layout|Scalar|SymInt|Tensor|arange|tensor|empty|randn|range|zeros|full|ones|rand)\\s*\\()[A-Za-z_]\\w*\\s*\\("
+    },
+    {
+      "flags": 0,
+      "id": "FORBIDDEN_DYNAMIC_LOADING",
+      "message": "禁止在选手 .mlu 中动态加载外部符号。",
+      "pattern": "\\b(dlopen|dlsym|dlmopen)\\b"
+    },
+    {
+      "flags": 0,
+      "id": "FORBIDDEN_PROCESS_SPAWN",
+      "message": "禁止在选手 .mlu 中启动进程或执行 shell。",
+      "pattern": "\\b(system|popen|fork|execve|execv|execl|posix_spawn)\\b"
+    },
+    {
+      "flags": 0,
+      "id": "FORBIDDEN_CNRT_QUEUE_CREATE",
+      "message": "请使用cnrtQueue tqueue =torch mlu::getCurMLustream();获取当前队列环境，禁止重新创建任务队列。",
+      "pattern": "\\bcnrtQueueCreate\\s*\\("
+    },
+    {
+      "flags": 0,
+      "id": "FORBIDDEN_CNNL_ADVANCED_OP",
+      "message": "禁止直接调用 CNNL 高级算子或相关 API；涉及计算的实现只能使用 BangC 允许的 API 与基础数学库。",
+      "pattern": "\\bcnnl[A-Z_]\\w*\\s*\\("
+    }
+  ],
+  "generated_at": "2026-05-15T14:15:22.694315+00:00",
+  "problem_rules": {
+    "001_LeakyReLU": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_001",
+      "message": "题目 001_LeakyReLU 对应算子禁止直接调库实现；命中词汇示例: leaky_relu",
+      "operators": [
+        "leaky_relu"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:leaky_relu)\\s*\\()|(?:(?:\\.|->)\\s*(?:leaky_relu)\\s*\\()",
+      "torch_model": "001_LeakyReLU.py"
+    },
+    "003_LogSoftmax": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_003",
+      "message": "题目 003_LogSoftmax 对应算子禁止直接调库实现；命中词汇示例: log_softmax",
+      "operators": [
+        "log_softmax"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:log_softmax)\\s*\\()|(?:(?:\\.|->)\\s*(?:log_softmax)\\s*\\()",
+      "torch_model": "003_LogSoftmax.py"
+    },
+    "004_batched_matrix_multiplication": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_004",
+      "message": "题目 004_batched_matrix_multiplication 对应算子禁止直接调库实现；命中词汇示例: bmm",
+      "operators": [
+        "bmm"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:bmm)\\s*\\()|(?:(?:\\.|->)\\s*(?:bmm)\\s*\\()",
+      "torch_model": "004_batched_matrix_multiplication.py"
+    },
+    "005_average_pooling_2d": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_005",
+      "message": "题目 005_average_pooling_2d 对应算子禁止直接调库实现；命中词汇示例: avg_pool2d, AvgPool2d, avg_pool",
+      "operators": [
+        "avg_pool2d",
+        "AvgPool2d",
+        "avg_pool"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:avg_pool2d|AvgPool2d|avg_pool)\\s*\\()|(?:(?:\\.|->)\\s*(?:avg_pool2d|AvgPool2d|avg_pool)\\s*\\()",
+      "torch_model": "005_average_pooling_2d.py"
+    },
+    "006_conv_depthwise_2D_square_input_square_kernel": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_006",
+      "message": "题目 006_conv_depthwise_2D_square_input_square_kernel 对应算子禁止直接调库实现；命中词汇示例: Conv2d, conv2d, conv",
+      "operators": [
+        "Conv2d",
+        "conv2d",
+        "conv"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Conv2d|conv2d|conv)\\s*\\()|(?:(?:\\.|->)\\s*(?:Conv2d|conv2d|conv)\\s*\\()",
+      "torch_model": "006_conv_depthwise_2D_square_input_square_kernel.py"
+    },
+    "007_conv_depthwise_separable_2D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_007",
+      "message": "题目 007_conv_depthwise_separable_2D 对应算子禁止直接调库实现；命中词汇示例: Conv2d, conv2d, conv",
+      "operators": [
+        "Conv2d",
+        "conv2d",
+        "conv"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Conv2d|conv2d|conv)\\s*\\()|(?:(?:\\.|->)\\s*(?:Conv2d|conv2d|conv)\\s*\\()",
+      "torch_model": "007_conv_depthwise_separable_2D.py"
+    },
+    "008_conv_pointwise_2D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_008",
+      "message": "题目 008_conv_pointwise_2D 对应算子禁止直接调库实现；命中词汇示例: Conv2d, conv2d, conv",
+      "operators": [
+        "Conv2d",
+        "conv2d",
+        "conv"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Conv2d|conv2d|conv)\\s*\\()|(?:(?:\\.|->)\\s*(?:Conv2d|conv2d|conv)\\s*\\()",
+      "torch_model": "008_conv_pointwise_2D.py"
+    },
+    "009_conv_standard_1D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_009",
+      "message": "题目 009_conv_standard_1D 对应算子禁止直接调库实现；命中词汇示例: Conv1d, conv1d, conv",
+      "operators": [
+        "Conv1d",
+        "conv1d",
+        "conv"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Conv1d|conv1d|conv)\\s*\\()|(?:(?:\\.|->)\\s*(?:Conv1d|conv1d|conv)\\s*\\()",
+      "torch_model": "009_conv_standard_1D.py"
+    },
+    "010_conv_standard_2D__square_input__square_kernel": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_010",
+      "message": "题目 010_conv_standard_2D__square_input__square_kernel 对应算子禁止直接调库实现；命中词汇示例: Conv2d, conv2d, conv",
+      "operators": [
+        "Conv2d",
+        "conv2d",
+        "conv"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Conv2d|conv2d|conv)\\s*\\()|(?:(?:\\.|->)\\s*(?:Conv2d|conv2d|conv)\\s*\\()",
+      "torch_model": "010_conv_standard_2D__square_input__square_kernel.py"
+    },
+    "011_conv_transposed_1D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_011",
+      "message": "题目 011_conv_transposed_1D 对应算子禁止直接调库实现；命中词汇示例: conv_transpose1d, ConvTranspose1d, conv_transpose",
+      "operators": [
+        "conv_transpose1d",
+        "ConvTranspose1d",
+        "conv_transpose"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:conv_transpose1d|ConvTranspose1d|conv_transpose)\\s*\\()|(?:(?:\\.|->)\\s*(?:conv_transpose1d|ConvTranspose1d|conv_transpose)\\s*\\()",
+      "torch_model": "011_conv_transposed_1D.py"
+    },
+    "012_conv_transposed_2D__asymmetric_input__square_kernel": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_012",
+      "message": "题目 012_conv_transposed_2D__asymmetric_input__square_kernel 对应算子禁止直接调库实现；命中词汇示例: conv_transpose2d, ConvTranspose2d, conv_transpose",
+      "operators": [
+        "conv_transpose2d",
+        "ConvTranspose2d",
+        "conv_transpose"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:conv_transpose2d|ConvTranspose2d|conv_transpose)\\s*\\()|(?:(?:\\.|->)\\s*(?:conv_transpose2d|ConvTranspose2d|conv_transpose)\\s*\\()",
+      "torch_model": "012_conv_transposed_2D__asymmetric_input__square_kernel.py"
+    },
+    "013_3D_tensor_matrix_multiplication": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_013",
+      "message": "题目 013_3D_tensor_matrix_multiplication 对应算子禁止直接调库实现；命中词汇示例: matmul",
+      "operators": [
+        "matmul"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul)\\s*\\()",
+      "torch_model": "013_3D_tensor_matrix_multiplication.py"
+    },
+    "014_4D_tensor_matrix_multiplication": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_014",
+      "message": "题目 014_4D_tensor_matrix_multiplication 对应算子禁止直接调库实现；命中词汇示例: einsum",
+      "operators": [
+        "einsum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:einsum)\\s*\\()|(?:(?:\\.|->)\\s*(?:einsum)\\s*\\()",
+      "torch_model": "014_4D_tensor_matrix_multiplication.py"
+    },
+    "015_Matmul_for_lower_triangular_matrices": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_015",
+      "message": "题目 015_Matmul_for_lower_triangular_matrices 对应算子禁止直接调库实现；命中词汇示例: matmul, tril",
+      "operators": [
+        "matmul",
+        "tril"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul|tril)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul|tril)\\s*\\()",
+      "torch_model": "015_Matmul_for_lower_triangular_matrices.py"
+    },
+    "016_Matmul_for_symmetric_matrices": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_016",
+      "message": "题目 016_Matmul_for_symmetric_matrices 对应算子禁止直接调库实现；命中词汇示例: matmul",
+      "operators": [
+        "matmul"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul)\\s*\\()",
+      "torch_model": "016_Matmul_for_symmetric_matrices.py"
+    },
+    "017_Matmul_for_upper_triangular_matrices": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_017",
+      "message": "题目 017_Matmul_for_upper_triangular_matrices 对应算子禁止直接调库实现；命中词汇示例: matmul, triu",
+      "operators": [
+        "matmul",
+        "triu"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul|triu)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul|triu)\\s*\\()",
+      "torch_model": "017_Matmul_for_upper_triangular_matrices.py"
+    },
+    "018_Matmul_with_diagonal_matrices_": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_018",
+      "message": "题目 018_Matmul_with_diagonal_matrices_ 对应算子禁止直接调库实现；命中词汇示例: diag",
+      "operators": [
+        "diag"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:diag)\\s*\\()|(?:(?:\\.|->)\\s*(?:diag)\\s*\\()",
+      "torch_model": "018_Matmul_with_diagonal_matrices_.py"
+    },
+    "019_Matmul_with_irregular_shapes_": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_019",
+      "message": "题目 019_Matmul_with_irregular_shapes_ 对应算子禁止直接调库实现；命中词汇示例: matmul",
+      "operators": [
+        "matmul"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul)\\s*\\()",
+      "torch_model": "019_Matmul_with_irregular_shapes_.py"
+    },
+    "020_Matmul_with_large_K_dimension_": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_020",
+      "message": "题目 020_Matmul_with_large_K_dimension_ 对应算子禁止直接调库实现；命中词汇示例: matmul",
+      "operators": [
+        "matmul"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul)\\s*\\()",
+      "torch_model": "020_Matmul_with_large_K_dimension_.py"
+    },
+    "021_Matmul_with_small_K_dimension_": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_021",
+      "message": "题目 021_Matmul_with_small_K_dimension_ 对应算子禁止直接调库实现；命中词汇示例: matmul",
+      "operators": [
+        "matmul"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul)\\s*\\()",
+      "torch_model": "021_Matmul_with_small_K_dimension_.py"
+    },
+    "022_Matmul_with_transposed_both": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_022",
+      "message": "题目 022_Matmul_with_transposed_both 对应算子禁止直接调库实现；命中词汇示例: matmul",
+      "operators": [
+        "matmul"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul)\\s*\\()",
+      "torch_model": "022_Matmul_with_transposed_both.py"
+    },
+    "023_Matrix_vector_multiplication_": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_023",
+      "message": "题目 023_Matrix_vector_multiplication_ 对应算子禁止直接调库实现；命中词汇示例: matmul",
+      "operators": [
+        "matmul"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul)\\s*\\()",
+      "torch_model": "023_Matrix_vector_multiplication_.py"
+    },
+    "024_Square_matrix_multiplication_": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_024",
+      "message": "题目 024_Square_matrix_multiplication_ 对应算子禁止直接调库实现；命中词汇示例: matmul",
+      "operators": [
+        "matmul"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul)\\s*\\()",
+      "torch_model": "024_Square_matrix_multiplication_.py"
+    },
+    "025_fused_matmul_fwd": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_025",
+      "message": "题目 025_fused_matmul_fwd 对应算子禁止直接调库实现；命中词汇示例: matmul",
+      "operators": [
+        "matmul"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:matmul)\\s*\\()|(?:(?:\\.|->)\\s*(?:matmul)\\s*\\()",
+      "torch_model": "025_fused_matmul_fwd.py"
+    },
+    "026_ELU": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_026",
+      "message": "题目 026_ELU 对应算子禁止直接调库实现；命中词汇示例: elu",
+      "operators": [
+        "elu"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:elu)\\s*\\()|(?:(?:\\.|->)\\s*(?:elu)\\s*\\()",
+      "torch_model": "026_ELU.py"
+    },
+    "027_GELU": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_027",
+      "message": "题目 027_GELU 对应算子禁止直接调库实现；命中词汇示例: gelu",
+      "operators": [
+        "gelu"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:gelu)\\s*\\()|(?:(?:\\.|->)\\s*(?:gelu)\\s*\\()",
+      "torch_model": "027_GELU.py"
+    },
+    "028_HardSigmoid": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_028",
+      "message": "题目 028_HardSigmoid 对应算子禁止直接调库实现；命中词汇示例: hardsigmoid",
+      "operators": [
+        "hardsigmoid"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:hardsigmoid)\\s*\\()|(?:(?:\\.|->)\\s*(?:hardsigmoid)\\s*\\()",
+      "torch_model": "028_HardSigmoid.py"
+    },
+    "029_HardTanh": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_029",
+      "message": "题目 029_HardTanh 对应算子禁止直接调库实现；命中词汇示例: hardtanh",
+      "operators": [
+        "hardtanh"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:hardtanh)\\s*\\()|(?:(?:\\.|->)\\s*(?:hardtanh)\\s*\\()",
+      "torch_model": "029_HardTanh.py"
+    },
+    "030_MinGPTNewGelu": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_030",
+      "message": "题目 030_MinGPTNewGelu 对应算子禁止直接调库实现；命中词汇示例: sqrt, tanh, pow",
+      "operators": [
+        "sqrt",
+        "tanh",
+        "pow"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:sqrt|tanh|pow)\\s*\\()|(?:(?:\\.|->)\\s*(?:sqrt|tanh|pow)\\s*\\()",
+      "torch_model": "030_MinGPTNewGelu.py"
+    },
+    "031_Softplus": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_031",
+      "message": "题目 031_Softplus 对应算子禁止直接调库实现；命中词汇示例: softplus",
+      "operators": [
+        "softplus"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:softplus)\\s*\\()|(?:(?:\\.|->)\\s*(?:softplus)\\s*\\()",
+      "torch_model": "031_Softplus.py"
+    },
+    "032_Softsign": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_032",
+      "message": "题目 032_Softsign 对应算子禁止直接调库实现；命中词汇示例: softsign",
+      "operators": [
+        "softsign"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:softsign)\\s*\\()|(?:(?:\\.|->)\\s*(?:softsign)\\s*\\()",
+      "torch_model": "032_Softsign.py"
+    },
+    "033_Swish": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_033",
+      "message": "题目 033_Swish 对应算子禁止直接调库实现；命中词汇示例: silu",
+      "operators": [
+        "silu"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:silu)\\s*\\()|(?:(?:\\.|->)\\s*(?:silu)\\s*\\()",
+      "torch_model": "033_Swish.py"
+    },
+    "034_Argmax_over_a_dimension": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_034",
+      "message": "题目 034_Argmax_over_a_dimension 对应算子禁止直接调库实现；命中词汇示例: argmax",
+      "operators": [
+        "argmax"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:argmax)\\s*\\()|(?:(?:\\.|->)\\s*(?:argmax)\\s*\\()",
+      "torch_model": "034_Argmax_over_a_dimension.py"
+    },
+    "035_L1Norm_": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_035",
+      "message": "题目 035_L1Norm_ 对应算子禁止直接调库实现；命中词汇示例: abs, sum",
+      "operators": [
+        "abs",
+        "sum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:abs|sum)\\s*\\()|(?:(?:\\.|->)\\s*(?:abs|sum)\\s*\\()",
+      "torch_model": "035_L1Norm_.py"
+    },
+    "036_L2Norm_": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_036",
+      "message": "题目 036_L2Norm_ 对应算子禁止直接调库实现；命中词汇示例: norm",
+      "operators": [
+        "norm"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:norm)\\s*\\()|(?:(?:\\.|->)\\s*(?:norm)\\s*\\()",
+      "torch_model": "036_L2Norm_.py"
+    },
+    "037_Max_reduction_over_a_dimension": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_037",
+      "message": "题目 037_Max_reduction_over_a_dimension 对应算子禁止直接调库实现；命中词汇示例: max",
+      "operators": [
+        "max"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:max)\\s*\\()|(?:(?:\\.|->)\\s*(?:max)\\s*\\()",
+      "torch_model": "037_Max_reduction_over_a_dimension.py"
+    },
+    "038_Product_reduction_over_a_dimension": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_038",
+      "message": "题目 038_Product_reduction_over_a_dimension 对应算子禁止直接调库实现；命中词汇示例: prod",
+      "operators": [
+        "prod"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:prod)\\s*\\()|(?:(?:\\.|->)\\s*(?:prod)\\s*\\()",
+      "torch_model": "038_Product_reduction_over_a_dimension.py"
+    },
+    "039_BatchNorm": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_039",
+      "message": "题目 039_BatchNorm 对应算子禁止直接调库实现；命中词汇示例: batch_norm2d, BatchNorm2d, batch_norm",
+      "operators": [
+        "batch_norm2d",
+        "BatchNorm2d",
+        "batch_norm"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:batch_norm2d|BatchNorm2d|batch_norm)\\s*\\()|(?:(?:\\.|->)\\s*(?:batch_norm2d|BatchNorm2d|batch_norm)\\s*\\()",
+      "torch_model": "039_BatchNorm.py"
+    },
+    "040_CosineSimilarityLoss": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_040",
+      "message": "题目 040_CosineSimilarityLoss 对应算子禁止直接调库实现；命中词汇示例: cosine_similarity, mean",
+      "operators": [
+        "cosine_similarity",
+        "mean"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cosine_similarity|mean)\\s*\\()|(?:(?:\\.|->)\\s*(?:cosine_similarity|mean)\\s*\\()",
+      "torch_model": "040_CosineSimilarityLoss.py"
+    },
+    "041_CrossEntropyLoss": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_041",
+      "message": "题目 041_CrossEntropyLoss 对应算子禁止直接调库实现；命中词汇示例: cross_entropy",
+      "operators": [
+        "cross_entropy"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cross_entropy)\\s*\\()|(?:(?:\\.|->)\\s*(?:cross_entropy)\\s*\\()",
+      "torch_model": "041_CrossEntropyLoss.py"
+    },
+    "042_FrobeniusNorm_": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_042",
+      "message": "题目 042_FrobeniusNorm_ 对应算子禁止直接调库实现；命中词汇示例: norm",
+      "operators": [
+        "norm"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:norm)\\s*\\()|(?:(?:\\.|->)\\s*(?:norm)\\s*\\()",
+      "torch_model": "042_FrobeniusNorm_.py"
+    },
+    "043_GroupNorm_": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_043",
+      "message": "题目 043_GroupNorm_ 对应算子禁止直接调库实现；命中词汇示例: group_norm, GroupNorm",
+      "operators": [
+        "group_norm",
+        "GroupNorm"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:group_norm|GroupNorm)\\s*\\()|(?:(?:\\.|->)\\s*(?:group_norm|GroupNorm)\\s*\\()",
+      "torch_model": "043_GroupNorm_.py"
+    },
+    "044_HingeLoss": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_044",
+      "message": "题目 044_HingeLoss 对应算子禁止直接调库实现；命中词汇示例: clamp, mean",
+      "operators": [
+        "clamp",
+        "mean"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:clamp|mean)\\s*\\()|(?:(?:\\.|->)\\s*(?:clamp|mean)\\s*\\()",
+      "torch_model": "044_HingeLoss.py"
+    },
+    "045_HuberLoss": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_045",
+      "message": "题目 045_HuberLoss 对应算子禁止直接调库实现；命中词汇示例: smooth_l1_loss, smooth_l1",
+      "operators": [
+        "smooth_l1_loss",
+        "smooth_l1"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:smooth_l1_loss|smooth_l1)\\s*\\()|(?:(?:\\.|->)\\s*(?:smooth_l1_loss|smooth_l1)\\s*\\()",
+      "torch_model": "045_HuberLoss.py"
+    },
+    "046_InstanceNorm": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_046",
+      "message": "题目 046_InstanceNorm 对应算子禁止直接调库实现；命中词汇示例: instance_norm2d, InstanceNorm2d, instance_norm",
+      "operators": [
+        "instance_norm2d",
+        "InstanceNorm2d",
+        "instance_norm"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:instance_norm2d|InstanceNorm2d|instance_norm)\\s*\\()|(?:(?:\\.|->)\\s*(?:instance_norm2d|InstanceNorm2d|instance_norm)\\s*\\()",
+      "torch_model": "046_InstanceNorm.py"
+    },
+    "047_Max_Pooling_1D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_047",
+      "message": "题目 047_Max_Pooling_1D 对应算子禁止直接调库实现；命中词汇示例: max_pool1d, MaxPool1d, max_pool",
+      "operators": [
+        "max_pool1d",
+        "MaxPool1d",
+        "max_pool"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:max_pool1d|MaxPool1d|max_pool)\\s*\\()|(?:(?:\\.|->)\\s*(?:max_pool1d|MaxPool1d|max_pool)\\s*\\()",
+      "torch_model": "047_Max_Pooling_1D.py"
+    },
+    "048_Max_Pooling_2D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_048",
+      "message": "题目 048_Max_Pooling_2D 对应算子禁止直接调库实现；命中词汇示例: max_pool2d, MaxPool2d, max_pool",
+      "operators": [
+        "max_pool2d",
+        "MaxPool2d",
+        "max_pool"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:max_pool2d|MaxPool2d|max_pool)\\s*\\()|(?:(?:\\.|->)\\s*(?:max_pool2d|MaxPool2d|max_pool)\\s*\\()",
+      "torch_model": "048_Max_Pooling_2D.py"
+    },
+    "049_Max_Pooling_3D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_049",
+      "message": "题目 049_Max_Pooling_3D 对应算子禁止直接调库实现；命中词汇示例: max_pool3d, MaxPool3d, max_pool",
+      "operators": [
+        "max_pool3d",
+        "MaxPool3d",
+        "max_pool"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:max_pool3d|MaxPool3d|max_pool)\\s*\\()|(?:(?:\\.|->)\\s*(?:max_pool3d|MaxPool3d|max_pool)\\s*\\()",
+      "torch_model": "049_Max_Pooling_3D.py"
+    },
+    "050_cumprod": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_050",
+      "message": "题目 050_cumprod 对应算子禁止直接调库实现；命中词汇示例: cumprod",
+      "operators": [
+        "cumprod"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cumprod)\\s*\\()|(?:(?:\\.|->)\\s*(?:cumprod)\\s*\\()",
+      "torch_model": "050_cumprod.py"
+    },
+    "051_cumsum": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_051",
+      "message": "题目 051_cumsum 对应算子禁止直接调库实现；命中词汇示例: cumsum",
+      "operators": [
+        "cumsum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cumsum)\\s*\\()|(?:(?:\\.|->)\\s*(?:cumsum)\\s*\\()",
+      "torch_model": "051_cumsum.py"
+    },
+    "052_cumsum_exclusive": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_052",
+      "message": "题目 052_cumsum_exclusive 对应算子禁止直接调库实现；命中词汇示例: cumsum, cat",
+      "operators": [
+        "cumsum",
+        "cat"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cumsum|cat)\\s*\\()|(?:(?:\\.|->)\\s*(?:cumsum|cat)\\s*\\()",
+      "torch_model": "052_cumsum_exclusive.py"
+    },
+    "053_cumsum_reverse": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_053",
+      "message": "题目 053_cumsum_reverse 对应算子禁止直接调库实现；命中词汇示例: cumsum, flip",
+      "operators": [
+        "cumsum",
+        "flip"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cumsum|flip)\\s*\\()|(?:(?:\\.|->)\\s*(?:cumsum|flip)\\s*\\()",
+      "torch_model": "053_cumsum_reverse.py"
+    },
+    "054_binned_gather": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_054",
+      "message": "题目 054_binned_gather 对应算子禁止直接调库实现；命中词汇示例: is_tensor, new_zeros",
+      "operators": [
+        "is_tensor",
+        "new_zeros"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:is_tensor|new_zeros)\\s*\\()|(?:(?:\\.|->)\\s*(?:is_tensor|new_zeros)\\s*\\()",
+      "torch_model": "054_binned_gather.py"
+    },
+    "055_binned_scatter": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_055",
+      "message": "题目 055_binned_scatter 对应算子禁止直接调库实现；命中词汇示例: is_tensor, new_zeros",
+      "operators": [
+        "is_tensor",
+        "new_zeros"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:is_tensor|new_zeros)\\s*\\()|(?:(?:\\.|->)\\s*(?:is_tensor|new_zeros)\\s*\\()",
+      "torch_model": "055_binned_scatter.py"
+    },
+    "056_gather": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_056",
+      "message": "题目 056_gather 对应算子禁止直接调库实现；命中词汇示例: index_select, new_zeros, cat, div",
+      "operators": [
+        "index_select",
+        "new_zeros",
+        "cat",
+        "div"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:index_select|new_zeros|cat|div)\\s*\\()|(?:(?:\\.|->)\\s*(?:index_select|new_zeros|cat|div)\\s*\\()",
+      "torch_model": "056_gather.py"
+    },
+    "057_rotary_pos_emb_fusion": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_057",
+      "message": "题目 057_rotary_pos_emb_fusion 对应算子禁止直接调库实现；命中词汇示例: cat",
+      "operators": [
+        "cat"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cat)\\s*\\()|(?:(?:\\.|->)\\s*(?:cat)\\s*\\()",
+      "torch_model": "057_rotary_pos_emb_fusion.py"
+    },
+    "058_Softmax": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_058",
+      "message": "题目 058_Softmax 对应算子禁止直接调库实现；命中词汇示例: softmax",
+      "operators": [
+        "softmax"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:softmax)\\s*\\()|(?:(?:\\.|->)\\s*(?:softmax)\\s*\\()",
+      "torch_model": "058_Softmax.py"
+    },
+    "059_hstu_mask_var_len_fwd": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_059",
+      "message": "题目 059_hstu_mask_var_len_fwd 对应算子禁止直接调库实现；命中词汇示例: transpose, append, matmul, split, where, silu, tile, cat",
+      "operators": [
+        "transpose",
+        "append",
+        "matmul",
+        "split",
+        "where",
+        "silu",
+        "tile",
+        "cat"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:transpose|append|matmul|split|where|silu|tile|cat)\\s*\\()|(?:(?:\\.|->)\\s*(?:transpose|append|matmul|split|where|silu|tile|cat)\\s*\\()",
+      "torch_model": "059_hstu_mask_var_len_fwd.py"
+    },
+    "060_cross_entropy": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_060",
+      "message": "题目 060_cross_entropy 对应算子禁止直接调库实现；命中词汇示例: cross_entropy, clamp, sum",
+      "operators": [
+        "cross_entropy",
+        "clamp",
+        "sum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cross_entropy|clamp|sum)\\s*\\()|(?:(?:\\.|->)\\s*(?:cross_entropy|clamp|sum)\\s*\\()",
+      "torch_model": "060_cross_entropy.py"
+    },
+    "061_adaptiveaveragepool": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_061",
+      "message": "题目 061_adaptiveaveragepool 对应算子禁止直接调库实现；命中词汇示例: adaptive_avg_pool3d, adaptive_avg_pool",
+      "operators": [
+        "adaptive_avg_pool3d",
+        "adaptive_avg_pool"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:adaptive_avg_pool3d|adaptive_avg_pool)\\s*\\()|(?:(?:\\.|->)\\s*(?:adaptive_avg_pool3d|adaptive_avg_pool)\\s*\\()",
+      "torch_model": "061_adaptiveaveragepool.py"
+    },
+    "062_compute_agg": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_062",
+      "message": "题目 062_compute_agg 对应算子禁止直接调库实现；命中词汇示例: cumsum",
+      "operators": [
+        "cumsum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cumsum)\\s*\\()|(?:(?:\\.|->)\\s*(?:cumsum)\\s*\\()",
+      "torch_model": "062_compute_agg.py"
+    },
+    "063_calc_block_sums": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_063",
+      "message": "题目 063_calc_block_sums 对应算子禁止直接调库实现；命中词汇示例: pad, sum",
+      "operators": [
+        "pad",
+        "sum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:pad|sum)\\s*\\()|(?:(?:\\.|->)\\s*(?:pad|sum)\\s*\\()",
+      "torch_model": "063_calc_block_sums.py"
+    },
+    "064_adaptive_average_pool_nhwc": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_064",
+      "message": "题目 064_adaptive_average_pool_nhwc 对应算子禁止直接调库实现；命中词汇示例: adaptive_avg_pool2d, adaptive_avg_pool",
+      "operators": [
+        "adaptive_avg_pool2d",
+        "adaptive_avg_pool"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:adaptive_avg_pool2d|adaptive_avg_pool)\\s*\\()|(?:(?:\\.|->)\\s*(?:adaptive_avg_pool2d|adaptive_avg_pool)\\s*\\()",
+      "torch_model": "064_adaptive_average_pool_nhwc.py"
+    },
+    "065_lpmax_cleanup": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_065",
+      "message": "题目 065_lpmax_cleanup 对应算子禁止直接调库实现；命中词汇示例: clone, isnan, all, max",
+      "operators": [
+        "clone",
+        "isnan",
+        "all",
+        "max"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:clone|isnan|all|max)\\s*\\()|(?:(?:\\.|->)\\s*(?:clone|isnan|all|max)\\s*\\()",
+      "torch_model": "065_lpmax_cleanup.py"
+    },
+    "067_renormRowsL1": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_067",
+      "message": "题目 067_renormRowsL1 对应算子禁止直接调库实现；命中词汇示例: where, sum",
+      "operators": [
+        "where",
+        "sum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:where|sum)\\s*\\()|(?:(?:\\.|->)\\s*(?:where|sum)\\s*\\()",
+      "torch_model": "067_renormRowsL1.py"
+    },
+    "069_lstm_cell_forward": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_069",
+      "message": "题目 069_lstm_cell_forward 对应算子禁止直接调库实现；命中词汇示例: sigmoid, tanh",
+      "operators": [
+        "sigmoid",
+        "tanh"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:sigmoid|tanh)\\s*\\()|(?:(?:\\.|->)\\s*(?:sigmoid|tanh)\\s*\\()",
+      "torch_model": "069_lstm_cell_forward.py"
+    },
+    "070_Sqrt": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_070",
+      "message": "题目 070_Sqrt 对应算子禁止直接调库实现；命中词汇示例: sqrt, abs",
+      "operators": [
+        "sqrt",
+        "abs"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:sqrt|abs)\\s*\\()|(?:(?:\\.|->)\\s*(?:sqrt|abs)\\s*\\()",
+      "torch_model": "070_Sqrt.py"
+    },
+    "071_Cos": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_071",
+      "message": "题目 071_Cos 对应算子禁止直接调库实现；命中词汇示例: cos",
+      "operators": [
+        "cos"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cos)\\s*\\()|(?:(?:\\.|->)\\s*(?:cos)\\s*\\()",
+      "torch_model": "071_Cos.py"
+    },
+    "073_Power": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_073",
+      "message": "题目 073_Power 对应算子禁止直接调库实现；命中词汇示例: abs, pow",
+      "operators": [
+        "abs",
+        "pow"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:abs|pow)\\s*\\()|(?:(?:\\.|->)\\s*(?:abs|pow)\\s*\\()",
+      "torch_model": "073_Power.py"
+    },
+    "074_Std_reduction_over_dim": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_074",
+      "message": "题目 074_Std_reduction_over_dim 对应算子禁止直接调库实现；命中词汇示例: std",
+      "operators": [
+        "std"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:std)\\s*\\()|(?:(?:\\.|->)\\s*(?:std)\\s*\\()",
+      "torch_model": "074_Std_reduction_over_dim.py"
+    },
+    "075_TopK": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_075",
+      "message": "题目 075_TopK 对应算子禁止直接调库实现；命中词汇示例: topk",
+      "operators": [
+        "topk"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:topk)\\s*\\()|(?:(?:\\.|->)\\s*(?:topk)\\s*\\()",
+      "torch_model": "075_TopK.py"
+    },
+    "076_Sort": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_076",
+      "message": "题目 076_Sort 对应算子禁止直接调库实现；命中词汇示例: sort",
+      "operators": [
+        "sort"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:sort)\\s*\\()|(?:(?:\\.|->)\\s*(?:sort)\\s*\\()",
+      "torch_model": "076_Sort.py"
+    },
+    "077_LogSumExp_over_dim": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_077",
+      "message": "题目 077_LogSumExp_over_dim 对应算子禁止直接调库实现；命中词汇示例: logsumexp",
+      "operators": [
+        "logsumexp"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:logsumexp)\\s*\\()|(?:(?:\\.|->)\\s*(?:logsumexp)\\s*\\()",
+      "torch_model": "077_LogSumExp_over_dim.py"
+    },
+    "078_CumMin": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_078",
+      "message": "题目 078_CumMin 对应算子禁止直接调库实现；命中词汇示例: cummin",
+      "operators": [
+        "cummin"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cummin)\\s*\\()|(?:(?:\\.|->)\\s*(?:cummin)\\s*\\()",
+      "torch_model": "078_CumMin.py"
+    },
+    "079_Global_sum": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_079",
+      "message": "题目 079_Global_sum 对应算子禁止直接调库实现；命中词汇示例: sum",
+      "operators": [
+        "sum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:sum)\\s*\\()|(?:(?:\\.|->)\\s*(?:sum)\\s*\\()",
+      "torch_model": "079_Global_sum.py"
+    },
+    "080_All_over_dim": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_080",
+      "message": "题目 080_All_over_dim 对应算子禁止直接调库实现；命中词汇示例: all",
+      "operators": [
+        "all"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:all)\\s*\\()|(?:(?:\\.|->)\\s*(?:all)\\s*\\()",
+      "torch_model": "080_All_over_dim.py"
+    },
+    "082_Scaled_Dot_Product_Attention": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_082",
+      "message": "题目 082_Scaled_Dot_Product_Attention 对应算子禁止直接调库实现；命中词汇示例: softmax, matmul, sqrt",
+      "operators": [
+        "softmax",
+        "matmul",
+        "sqrt"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:softmax|matmul|sqrt)\\s*\\()|(?:(?:\\.|->)\\s*(?:softmax|matmul|sqrt)\\s*\\()",
+      "torch_model": "082_Scaled_Dot_Product_Attention.py"
+    },
+    "083_Causal_Self_Attention": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_083",
+      "message": "题目 083_Causal_Self_Attention 对应算子禁止直接调库实现；命中词汇示例: masked_fill, softmax, matmul, sqrt, tril",
+      "operators": [
+        "masked_fill",
+        "softmax",
+        "matmul",
+        "sqrt",
+        "tril"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:masked_fill|softmax|matmul|sqrt|tril)\\s*\\()|(?:(?:\\.|->)\\s*(?:masked_fill|softmax|matmul|sqrt|tril)\\s*\\()",
+      "torch_model": "083_Causal_Self_Attention.py"
+    },
+    "084_Cross_Attention": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_084",
+      "message": "题目 084_Cross_Attention 对应算子禁止直接调库实现；命中词汇示例: multihead_attention, MultiheadAttention",
+      "operators": [
+        "multihead_attention",
+        "MultiheadAttention"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:multihead_attention|MultiheadAttention)\\s*\\()|(?:(?:\\.|->)\\s*(?:multihead_attention|MultiheadAttention)\\s*\\()",
+      "torch_model": "084_Cross_Attention.py"
+    },
+    "085_Linear": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_085",
+      "message": "题目 085_Linear 对应算子禁止直接调库实现；命中词汇示例: Linear, linear",
+      "operators": [
+        "Linear",
+        "linear"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Linear|linear)\\s*\\()|(?:(?:\\.|->)\\s*(?:Linear|linear)\\s*\\()",
+      "torch_model": "085_Linear.py"
+    },
+    "086_Batch_outer_product": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_086",
+      "message": "题目 086_Batch_outer_product 对应算子禁止直接调库实现；命中词汇示例: einsum",
+      "operators": [
+        "einsum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:einsum)\\s*\\()|(?:(?:\\.|->)\\s*(?:einsum)\\s*\\()",
+      "torch_model": "086_Batch_outer_product.py"
+    },
+    "088_Matrix_trace": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_088",
+      "message": "题目 088_Matrix_trace 对应算子禁止直接调库实现；命中词汇示例: diagonal",
+      "operators": [
+        "diagonal"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:diagonal)\\s*\\()|(?:(?:\\.|->)\\s*(?:diagonal)\\s*\\()",
+      "torch_model": "088_Matrix_trace.py"
+    },
+    "089_Diagonal_extraction": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_089",
+      "message": "题目 089_Diagonal_extraction 对应算子禁止直接调库实现；命中词汇示例: diagonal",
+      "operators": [
+        "diagonal"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:diagonal)\\s*\\()|(?:(?:\\.|->)\\s*(?:diagonal)\\s*\\()",
+      "torch_model": "089_Diagonal_extraction.py"
+    },
+    "090_Einsum_4D_contract": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_090",
+      "message": "题目 090_Einsum_4D_contract 对应算子禁止直接调库实现；命中词汇示例: einsum",
+      "operators": [
+        "einsum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:einsum)\\s*\\()|(?:(?:\\.|->)\\s*(?:einsum)\\s*\\()",
+      "torch_model": "090_Einsum_4D_contract.py"
+    },
+    "091_Matrix_inverse": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_091",
+      "message": "题目 091_Matrix_inverse 对应算子禁止直接调库实现；命中词汇示例: linalg_inv, inv",
+      "operators": [
+        "linalg_inv",
+        "inv"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:linalg_inv|inv)\\s*\\()|(?:(?:\\.|->)\\s*(?:linalg_inv|inv)\\s*\\()",
+      "torch_model": "091_Matrix_inverse.py"
+    },
+    "092_SVD_decomposition": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_092",
+      "message": "题目 092_SVD_decomposition 对应算子禁止直接调库实现；命中词汇示例: linalg_svd, svd",
+      "operators": [
+        "linalg_svd",
+        "svd"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:linalg_svd|svd)\\s*\\()|(?:(?:\\.|->)\\s*(?:linalg_svd|svd)\\s*\\()",
+      "torch_model": "092_SVD_decomposition.py"
+    },
+    "093_Batch_triangular_solve": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_093",
+      "message": "题目 093_Batch_triangular_solve 对应算子禁止直接调库实现；命中词汇示例: linalg_solve_triangular, solve_triangular",
+      "operators": [
+        "linalg_solve_triangular",
+        "solve_triangular"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:linalg_solve_triangular|solve_triangular)\\s*\\()|(?:(?:\\.|->)\\s*(?:linalg_solve_triangular|solve_triangular)\\s*\\()",
+      "torch_model": "093_Batch_triangular_solve.py"
+    },
+    "094_LayerNorm": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_094",
+      "message": "题目 094_LayerNorm 对应算子禁止直接调库实现；命中词汇示例: layer_norm, LayerNorm",
+      "operators": [
+        "layer_norm",
+        "LayerNorm"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:layer_norm|LayerNorm)\\s*\\()|(?:(?:\\.|->)\\s*(?:layer_norm|LayerNorm)\\s*\\()",
+      "torch_model": "094_LayerNorm.py"
+    },
+    "095_Add_RMSNorm": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_095",
+      "message": "题目 095_Add_RMSNorm 对应算子禁止直接调库实现；命中词汇示例: Parameter, parameter, pow",
+      "operators": [
+        "Parameter",
+        "parameter",
+        "pow"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Parameter|parameter|pow)\\s*\\()|(?:(?:\\.|->)\\s*(?:Parameter|parameter|pow)\\s*\\()",
+      "torch_model": "095_Add_RMSNorm.py"
+    },
+    "096_LocalResponseNorm": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_096",
+      "message": "题目 096_LocalResponseNorm 对应算子禁止直接调库实现；命中词汇示例: local_response_norm, LocalResponseNorm",
+      "operators": [
+        "local_response_norm",
+        "LocalResponseNorm"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:local_response_norm|LocalResponseNorm)\\s*\\()|(?:(?:\\.|->)\\s*(?:local_response_norm|LocalResponseNorm)\\s*\\()",
+      "torch_model": "096_LocalResponseNorm.py"
+    },
+    "097_PixelShuffle": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_097",
+      "message": "题目 097_PixelShuffle 对应算子禁止直接调库实现；命中词汇示例: pixel_shuffle, PixelShuffle",
+      "operators": [
+        "pixel_shuffle",
+        "PixelShuffle"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:pixel_shuffle|PixelShuffle)\\s*\\()|(?:(?:\\.|->)\\s*(?:pixel_shuffle|PixelShuffle)\\s*\\()",
+      "torch_model": "097_PixelShuffle.py"
+    },
+    "098_Attention_with_temperature": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_098",
+      "message": "题目 098_Attention_with_temperature 对应算子禁止直接调库实现；命中词汇示例: softmax, matmul, sqrt",
+      "operators": [
+        "softmax",
+        "matmul",
+        "sqrt"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:softmax|matmul|sqrt)\\s*\\()|(?:(?:\\.|->)\\s*(?:softmax|matmul|sqrt)\\s*\\()",
+      "torch_model": "098_Attention_with_temperature.py"
+    },
+    "100_Adaptive_Max_Pool_2D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_100",
+      "message": "题目 100_Adaptive_Max_Pool_2D 对应算子禁止直接调库实现；命中词汇示例: adaptive_max_pool2d, AdaptiveMaxPool2d, adaptive_max_pool",
+      "operators": [
+        "adaptive_max_pool2d",
+        "AdaptiveMaxPool2d",
+        "adaptive_max_pool"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:adaptive_max_pool2d|AdaptiveMaxPool2d|adaptive_max_pool)\\s*\\()|(?:(?:\\.|->)\\s*(?:adaptive_max_pool2d|AdaptiveMaxPool2d|adaptive_max_pool)\\s*\\()",
+      "torch_model": "100_Adaptive_Max_Pool_2D.py"
+    },
+    "101_Max_Pool_2D_with_indices": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_101",
+      "message": "题目 101_Max_Pool_2D_with_indices 对应算子禁止直接调库实现；命中词汇示例: max_pool2d, MaxPool2d, max_pool",
+      "operators": [
+        "max_pool2d",
+        "MaxPool2d",
+        "max_pool"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:max_pool2d|MaxPool2d|max_pool)\\s*\\()|(?:(?:\\.|->)\\s*(?:max_pool2d|MaxPool2d|max_pool)\\s*\\()",
+      "torch_model": "101_Max_Pool_2D_with_indices.py"
+    },
+    "102_Adaptive_Average_Pool_3D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_102",
+      "message": "题目 102_Adaptive_Average_Pool_3D 对应算子禁止直接调库实现；命中词汇示例: adaptive_avg_pool3d, adaptive_avg_pool",
+      "operators": [
+        "adaptive_avg_pool3d",
+        "adaptive_avg_pool"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:adaptive_avg_pool3d|adaptive_avg_pool)\\s*\\()|(?:(?:\\.|->)\\s*(?:adaptive_avg_pool3d|adaptive_avg_pool)\\s*\\()",
+      "torch_model": "102_Adaptive_Average_Pool_3D.py"
+    },
+    "103_MSE_Loss": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_103",
+      "message": "题目 103_MSE_Loss 对应算子禁止直接调库实现；命中词汇示例: mse_loss, mse",
+      "operators": [
+        "mse_loss",
+        "mse"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:mse_loss|mse)\\s*\\()|(?:(?:\\.|->)\\s*(?:mse_loss|mse)\\s*\\()",
+      "torch_model": "103_MSE_Loss.py"
+    },
+    "104_KL_Divergence_Loss": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_104",
+      "message": "题目 104_KL_Divergence_Loss 对应算子禁止直接调库实现；命中词汇示例: kl_div",
+      "operators": [
+        "kl_div"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:kl_div)\\s*\\()|(?:(?:\\.|->)\\s*(?:kl_div)\\s*\\()",
+      "torch_model": "104_KL_Divergence_Loss.py"
+    },
+    "105_Embedding_lookup": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_105",
+      "message": "题目 105_Embedding_lookup 对应算子禁止直接调库实现；命中词汇示例: Embedding, embedding",
+      "operators": [
+        "Embedding",
+        "embedding"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Embedding|embedding)\\s*\\()|(?:(?:\\.|->)\\s*(?:Embedding|embedding)\\s*\\()",
+      "torch_model": "105_Embedding_lookup.py"
+    },
+    "106_Embedding_bag_mean": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_106",
+      "message": "题目 106_Embedding_bag_mean 对应算子禁止直接调库实现；命中词汇示例: embedding_bag, EmbeddingBag",
+      "operators": [
+        "embedding_bag",
+        "EmbeddingBag"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:embedding_bag|EmbeddingBag)\\s*\\()|(?:(?:\\.|->)\\s*(?:embedding_bag|EmbeddingBag)\\s*\\()",
+      "torch_model": "106_Embedding_bag_mean.py"
+    },
+    "107_Sinusoidal_positional_encoding": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_107",
+      "message": "题目 107_Sinusoidal_positional_encoding 对应算子禁止直接调库实现；命中词汇示例: cos, exp, log, sin",
+      "operators": [
+        "cos",
+        "exp",
+        "log",
+        "sin"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cos|exp|log|sin)\\s*\\()|(?:(?:\\.|->)\\s*(?:cos|exp|log|sin)\\s*\\()",
+      "torch_model": "107_Sinusoidal_positional_encoding.py"
+    },
+    "109_Scatter_add": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_109",
+      "message": "题目 109_Scatter_add 对应算子禁止直接调库实现；命中词汇示例: scatter_add_",
+      "operators": [
+        "scatter_add_"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:scatter_add_)\\s*\\()|(?:(?:\\.|->)\\s*(?:scatter_add_)\\s*\\()",
+      "torch_model": "109_Scatter_add.py"
+    },
+    "110_Gather_rows": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_110",
+      "message": "题目 110_Gather_rows 对应算子禁止直接调库实现；命中词汇示例: gather",
+      "operators": [
+        "gather"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:gather)\\s*\\()|(?:(?:\\.|->)\\s*(?:gather)\\s*\\()",
+      "torch_model": "110_Gather_rows.py"
+    },
+    "111_Masked_select": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_111",
+      "message": "题目 111_Masked_select 对应算子禁止直接调库实现；命中词汇示例: masked_select",
+      "operators": [
+        "masked_select"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:masked_select)\\s*\\()|(?:(?:\\.|->)\\s*(?:masked_select)\\s*\\()",
+      "torch_model": "111_Masked_select.py"
+    },
+    "112_Index_put": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_112",
+      "message": "题目 112_Index_put 对应算子禁止直接调库实现；命中词汇示例: clone",
+      "operators": [
+        "clone"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:clone)\\s*\\()|(?:(?:\\.|->)\\s*(?:clone)\\s*\\()",
+      "torch_model": "112_Index_put.py"
+    },
+    "113_Upsample_nearest": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_113",
+      "message": "题目 113_Upsample_nearest 对应算子禁止直接调库实现；命中词汇示例: Upsample, upsample",
+      "operators": [
+        "Upsample",
+        "upsample"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Upsample|upsample)\\s*\\()|(?:(?:\\.|->)\\s*(?:Upsample|upsample)\\s*\\()",
+      "torch_model": "113_Upsample_nearest.py"
+    },
+    "114_Pad_constant": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_114",
+      "message": "题目 114_Pad_constant 对应算子禁止直接调库实现；命中词汇示例: pad",
+      "operators": [
+        "pad"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:pad)\\s*\\()|(?:(?:\\.|->)\\s*(?:pad)\\s*\\()",
+      "torch_model": "114_Pad_constant.py"
+    },
+    "115_Unfold": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_115",
+      "message": "题目 115_Unfold 对应算子禁止直接调库实现；命中词汇示例: Unfold, unfold",
+      "operators": [
+        "Unfold",
+        "unfold"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Unfold|unfold)\\s*\\()|(?:(?:\\.|->)\\s*(?:Unfold|unfold)\\s*\\()",
+      "torch_model": "115_Unfold.py"
+    },
+    "116_Grid_sample": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_116",
+      "message": "题目 116_Grid_sample 对应算子禁止直接调库实现；命中词汇示例: grid_sample",
+      "operators": [
+        "grid_sample"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:grid_sample)\\s*\\()|(?:(?:\\.|->)\\s*(?:grid_sample)\\s*\\()",
+      "torch_model": "116_Grid_sample.py"
+    },
+    "117_Masked_fill": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_117",
+      "message": "题目 117_Masked_fill 对应算子禁止直接调库实现；命中词汇示例: masked_fill",
+      "operators": [
+        "masked_fill"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:masked_fill)\\s*\\()|(?:(?:\\.|->)\\s*(?:masked_fill)\\s*\\()",
+      "torch_model": "117_Masked_fill.py"
+    },
+    "118_Where_conditional": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_118",
+      "message": "题目 118_Where_conditional 对应算子禁止直接调库实现；命中词汇示例: where",
+      "operators": [
+        "where"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:where)\\s*\\()|(?:(?:\\.|->)\\s*(?:where)\\s*\\()",
+      "torch_model": "118_Where_conditional.py"
+    },
+    "119_One_hot_encoding": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_119",
+      "message": "题目 119_One_hot_encoding 对应算子禁止直接调库实现；命中词汇示例: one_hot",
+      "operators": [
+        "one_hot"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:one_hot)\\s*\\()|(?:(?:\\.|->)\\s*(?:one_hot)\\s*\\()",
+      "torch_model": "119_One_hot_encoding.py"
+    },
+    "120_Masked_softmax": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_120",
+      "message": "题目 120_Masked_softmax 对应算子禁止直接调库实现；命中词汇示例: masked_fill, softmax",
+      "operators": [
+        "masked_fill",
+        "softmax"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:masked_fill|softmax)\\s*\\()|(?:(?:\\.|->)\\s*(?:masked_fill|softmax)\\s*\\()",
+      "torch_model": "120_Masked_softmax.py"
+    },
+    "121_Scaled_masked_softmax": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_121",
+      "message": "题目 121_Scaled_masked_softmax 对应算子禁止直接调库实现；命中词汇示例: masked_fill, softmax",
+      "operators": [
+        "masked_fill",
+        "softmax"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:masked_fill|softmax)\\s*\\()|(?:(?:\\.|->)\\s*(?:masked_fill|softmax)\\s*\\()",
+      "torch_model": "121_Scaled_masked_softmax.py"
+    },
+    "122_Prefix_sum_2D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_122",
+      "message": "题目 122_Prefix_sum_2D 对应算子禁止直接调库实现；命中词汇示例: cumsum",
+      "operators": [
+        "cumsum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cumsum)\\s*\\()|(?:(?:\\.|->)\\s*(?:cumsum)\\s*\\()",
+      "torch_model": "122_Prefix_sum_2D.py"
+    },
+    "123_Masked_cumsum": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_123",
+      "message": "题目 123_Masked_cumsum 对应算子禁止直接调库实现；命中词汇示例: cumsum",
+      "operators": [
+        "cumsum"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:cumsum)\\s*\\()|(?:(?:\\.|->)\\s*(?:cumsum)\\s*\\()",
+      "torch_model": "123_Masked_cumsum.py"
+    },
+    "124_Weight_standardization": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_124",
+      "message": "题目 124_Weight_standardization 对应算子禁止直接调库实现；命中词汇示例: Parameter, parameter, conv2d, randn, conv, mean, std",
+      "operators": [
+        "Parameter",
+        "parameter",
+        "conv2d",
+        "randn",
+        "conv",
+        "mean",
+        "std"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Parameter|parameter|conv2d|randn|conv|mean|std)\\s*\\()|(?:(?:\\.|->)\\s*(?:Parameter|parameter|conv2d|randn|conv|mean|std)\\s*\\()",
+      "torch_model": "124_Weight_standardization.py"
+    },
+    "125_Conditional_LayerNorm": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_125",
+      "message": "题目 125_Conditional_LayerNorm 对应算子禁止直接调库实现；命中词汇示例: layer_norm, LayerNorm, Linear, linear",
+      "operators": [
+        "layer_norm",
+        "LayerNorm",
+        "Linear",
+        "linear"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:layer_norm|LayerNorm|Linear|linear)\\s*\\()|(?:(?:\\.|->)\\s*(?:layer_norm|LayerNorm|Linear|linear)\\s*\\()",
+      "torch_model": "125_Conditional_LayerNorm.py"
+    },
+    "126_QR_decomposition": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_126",
+      "message": "题目 126_QR_decomposition 对应算子禁止直接调库实现；命中词汇示例: linalg_qr, qr",
+      "operators": [
+        "linalg_qr",
+        "qr"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:linalg_qr|qr)\\s*\\()|(?:(?:\\.|->)\\s*(?:linalg_qr|qr)\\s*\\()",
+      "torch_model": "126_QR_decomposition.py"
+    },
+    "127_Cholesky_decomposition": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_127",
+      "message": "题目 127_Cholesky_decomposition 对应算子禁止直接调库实现；命中词汇示例: linalg_cholesky, cholesky",
+      "operators": [
+        "linalg_cholesky",
+        "cholesky"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:linalg_cholesky|cholesky)\\s*\\()|(?:(?:\\.|->)\\s*(?:linalg_cholesky|cholesky)\\s*\\()",
+      "torch_model": "127_Cholesky_decomposition.py"
+    },
+    "128_Batch_norm_1D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_128",
+      "message": "题目 128_Batch_norm_1D 对应算子禁止直接调库实现；命中词汇示例: batch_norm1d, BatchNorm1d, batch_norm",
+      "operators": [
+        "batch_norm1d",
+        "BatchNorm1d",
+        "batch_norm"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:batch_norm1d|BatchNorm1d|batch_norm)\\s*\\()|(?:(?:\\.|->)\\s*(?:batch_norm1d|BatchNorm1d|batch_norm)\\s*\\()",
+      "torch_model": "128_Batch_norm_1D.py"
+    },
+    "129_Attention_score_with_bias": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_129",
+      "message": "题目 129_Attention_score_with_bias 对应算子禁止直接调库实现；命中词汇示例: softmax, matmul, sqrt",
+      "operators": [
+        "softmax",
+        "matmul",
+        "sqrt"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:softmax|matmul|sqrt)\\s*\\()|(?:(?:\\.|->)\\s*(?:softmax|matmul|sqrt)\\s*\\()",
+      "torch_model": "129_Attention_score_with_bias.py"
+    },
+    "130_Attention_kv_cache": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_130",
+      "message": "题目 130_Attention_kv_cache 对应算子禁止直接调库实现；命中词汇示例: softmax, matmul, sqrt, cat",
+      "operators": [
+        "softmax",
+        "matmul",
+        "sqrt",
+        "cat"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:softmax|matmul|sqrt|cat)\\s*\\()|(?:(?:\\.|->)\\s*(?:softmax|matmul|sqrt|cat)\\s*\\()",
+      "torch_model": "130_Attention_kv_cache.py"
+    },
+    "131_Relative_position_encoding": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_131",
+      "message": "题目 131_Relative_position_encoding 对应算子禁止直接调库实现；命中词汇示例: Embedding, embedding",
+      "operators": [
+        "Embedding",
+        "embedding"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Embedding|embedding)\\s*\\()|(?:(?:\\.|->)\\s*(?:Embedding|embedding)\\s*\\()",
+      "torch_model": "131_Relative_position_encoding.py"
+    },
+    "132_Sparse_embedding": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_132",
+      "message": "题目 132_Sparse_embedding 对应算子禁止直接调库实现；命中词汇示例: Embedding, embedding",
+      "operators": [
+        "Embedding",
+        "embedding"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Embedding|embedding)\\s*\\()|(?:(?:\\.|->)\\s*(?:Embedding|embedding)\\s*\\()",
+      "torch_model": "132_Sparse_embedding.py"
+    },
+    "133_Triplet_loss": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_133",
+      "message": "题目 133_Triplet_loss 对应算子禁止直接调库实现；命中词汇示例: triplet_margin_loss, TripletMarginLoss, triplet_margin",
+      "operators": [
+        "triplet_margin_loss",
+        "TripletMarginLoss",
+        "triplet_margin"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:triplet_margin_loss|TripletMarginLoss|triplet_margin)\\s*\\()|(?:(?:\\.|->)\\s*(?:triplet_margin_loss|TripletMarginLoss|triplet_margin)\\s*\\()",
+      "torch_model": "133_Triplet_loss.py"
+    },
+    "134_Depthwise_conv_2D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_134",
+      "message": "题目 134_Depthwise_conv_2D 对应算子禁止直接调库实现；命中词汇示例: Conv2d, conv2d, conv",
+      "operators": [
+        "Conv2d",
+        "conv2d",
+        "conv"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Conv2d|conv2d|conv)\\s*\\()|(?:(?:\\.|->)\\s*(?:Conv2d|conv2d|conv)\\s*\\()",
+      "torch_model": "134_Depthwise_conv_2D.py"
+    },
+    "135_Dilated_conv_2D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_135",
+      "message": "题目 135_Dilated_conv_2D 对应算子禁止直接调库实现；命中词汇示例: Conv2d, conv2d, conv",
+      "operators": [
+        "Conv2d",
+        "conv2d",
+        "conv"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Conv2d|conv2d|conv)\\s*\\()|(?:(?:\\.|->)\\s*(?:Conv2d|conv2d|conv)\\s*\\()",
+      "torch_model": "135_Dilated_conv_2D.py"
+    },
+    "136_Grouped_conv_2D": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_136",
+      "message": "题目 136_Grouped_conv_2D 对应算子禁止直接调库实现；命中词汇示例: Conv2d, conv2d, conv",
+      "operators": [
+        "Conv2d",
+        "conv2d",
+        "conv"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:Conv2d|conv2d|conv)\\s*\\()|(?:(?:\\.|->)\\s*(?:Conv2d|conv2d|conv)\\s*\\()",
+      "torch_model": "136_Grouped_conv_2D.py"
+    },
+    "137_LSTM_forward": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_137",
+      "message": "题目 137_LSTM_forward 对应算子禁止直接调库实现；命中词汇示例: LSTM, lstm",
+      "operators": [
+        "LSTM",
+        "lstm"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:LSTM|lstm)\\s*\\()|(?:(?:\\.|->)\\s*(?:LSTM|lstm)\\s*\\()",
+      "torch_model": "137_LSTM_forward.py"
+    },
+    "138_GRU_forward": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_138",
+      "message": "题目 138_GRU_forward 对应算子禁止直接调库实现；命中词汇示例: GRU, gru",
+      "operators": [
+        "GRU",
+        "gru"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:GRU|gru)\\s*\\()|(?:(?:\\.|->)\\s*(?:GRU|gru)\\s*\\()",
+      "torch_model": "138_GRU_forward.py"
+    },
+    "139_Sparse_attention_mask": {
+      "flags": 0,
+      "id": "FORBIDDEN_PROBLEM_SPECIFIC_OP_139",
+      "message": "题目 139_Sparse_attention_mask 对应算子禁止直接调库实现；命中词汇示例: masked_fill, softmax, matmul, sqrt",
+      "operators": [
+        "masked_fill",
+        "softmax",
+        "matmul",
+        "sqrt"
+      ],
+      "pattern": "(?:\\b(?:torch::|at::)(?:[A-Za-z_]\\w*::)*(?:masked_fill|softmax|matmul|sqrt)\\s*\\()|(?:(?:\\.|->)\\s*(?:masked_fill|softmax|matmul|sqrt)\\s*\\()",
+      "torch_model": "139_Sparse_attention_mask.py"
+    }
+  },
+  "version": 1
+}
